@@ -9,6 +9,7 @@ import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -316,6 +317,7 @@ public class CountryCodePicker extends RelativeLayout {
 
     /**
      * To show/hide phone code from country selection dialog
+     *
      * @param ccpDialogShowPhoneCode
      */
     public void setCcpDialogShowPhoneCode(boolean ccpDialogShowPhoneCode) {
@@ -1428,7 +1430,9 @@ public class CountryCodePicker extends RelativeLayout {
         try {
             TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             String currentCountryISO = telephonyManager.getSimCountryIso();
-            setSelectedCountry(Country.getCountryForNameCodeFromLibraryMasterList(getContext(), getLanguageToApply(), currentCountryISO));
+            if (!TextUtils.isEmpty(currentCountryISO)) {
+                setSelectedCountry(Country.getCountryForNameCodeFromLibraryMasterList(getContext(), getLanguageToApply(), currentCountryISO));
+            }
         } catch (Exception e) {
             Log.w(TAG, "applyCustomProperty: could not set country from sim");
         }
